@@ -243,6 +243,7 @@ namespace game
                 if(player1->ragdoll) cleanragdoll(player1);
                 crouchplayer(player1, 10, true);
                 moveplayer(player1, 10, true);
+				
                 swayhudgun(curtime);
                 entities::checkitems(player1);
                 if(cmode) cmode->checkitems(player1);
@@ -754,7 +755,13 @@ namespace game
         gameent *d = hudplayer();
         if(d->state!=CS_EDITING)
         {
-            if(d->state!=CS_SPECTATOR) drawhudicons(d);
+			if (d->state != CS_SPECTATOR) {
+				drawhudicons(d);
+				// draws time remaining and kills
+				int secs = max(maplimit - lastmillis, 0) / 1000;
+				draw_textf("%d:%02d", 0, 0, secs / 60, secs % 60);
+				draw_textf("%d", 0, 100, player1->frags);
+			}
             if(cmode) cmode->drawhud(d, w, h);
         }
 
