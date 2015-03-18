@@ -99,7 +99,9 @@ enum
     M_LOCAL      = 1<<5,
     M_LOBBY      = 1<<6,
     M_RAIL       = 1<<7,
-    M_PULSE      = 1<<8
+    M_PULSE      = 1<<8,
+	M_ZOMBIE	 = 1<<9,
+	M_VIP	     = 1<<10
 };
 
 static struct gamemodeinfo
@@ -117,6 +119,11 @@ static struct gamemodeinfo
     { "ptdm", "pTDM", M_TEAM | M_PULSE, "Pulse Rifle Team Deathmatch:\nFrag \fs\f3the enemy team\fr with pulse rifles to score points for \fs\f1your team\fr." },
     { "rctf", "rCTF", M_CTF | M_TEAM | M_RAIL, "Railgun Capture The Flag:\nCapture \fs\f3the enemy flag\fr and bring it back to \fs\f1your flag\fr to score points for \fs\f1your team\fr." },
     { "pctf", "pCTF", M_CTF | M_TEAM | M_PULSE, "Pulse Rifle Capture The Flag:\nCapture \fs\f3the enemy flag\fr and bring it back to \fs\f1your flag\fr to score points for \fs\f1your team\fr." },
+	{ "rzomb", "Rail Zombies", M_ZOMBIE | M_RAIL, "Railgun Zombies:\nOne player is a vicious zombie. Can you kill him before he infects everyone?" },
+	{ "pzomb", "Pulse Zombies", M_ZOMBIE | M_PULSE, "Pulse Rifle Zombies:\nOne player is a vicious zombie. Can you kill him before he infects everyone?" },
+	{ "rvip", "Rail Assassination", M_VIP | M_TEAM | M_RAIL, "Railgun Assassination:\nTwo teams get one VIP a piece. Kill the other team's VIP to get points!" },
+	{ "pvip", "Pulse Assassination", M_VIP | M_TEAM | M_PULSE, "Pulse Rifle Assassination:\nTwo teams get one VIP a piece. Kill the other team's VIP to get points!" }
+
 };
 
 #define STARTGAMEMODE (-1)
