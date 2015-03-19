@@ -757,12 +757,13 @@ namespace game
         {
 			if (d->state != CS_SPECTATOR) {
 				drawhudicons(d);
-				// draws time remaining and kills
-				int secs = max(maplimit - lastmillis, 0) / 1000;
-				draw_textf("%d:%02d", 0, 0, secs / 60, secs % 60);
-				draw_textf("%d", 0, 100, player1->frags);
+				
 			}
             if(cmode) cmode->drawhud(d, w, h);
+			// draws time remaining and kills
+			int secs = max(maplimit - lastmillis, 0) / 1000;
+			draw_textf("%d:%02d", 0, 0, secs / 60, secs % 60);
+			draw_textf("%d", 0, 100, player1->frags);
         }
 
         pophudmatrix();
