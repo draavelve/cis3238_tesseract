@@ -140,6 +140,8 @@ static struct gamemodeinfo
 #define isteam(a,b)    (m_teammode && a==b)
 #define m_rail         (m_check(gamemode, M_RAIL))
 #define m_pulse        (m_check(gamemode, M_PULSE))
+#define m_zombie       (m_check(gamemode, M_ZOMBIE))
+#define m_vip		   (m_check(gamemode, M_VIP))
 
 #define m_demo         (m_check(gamemode, M_DEMO))
 #define m_edit         (m_check(gamemode, M_EDIT))
@@ -169,7 +171,12 @@ enum
     S_FLAGRETURN,
     S_FLAGSCORE,
     S_FLAGRESET,
-    S_FLAGFAIL
+    S_FLAGFAIL,
+	//Announcer sounds
+	S_ANNOUNCER_DM,
+	S_ANNOUNCER_CTF,
+	S_ANNOUNCER_ZOM,
+	S_ANNOUNCER_GAMEOVER
 };
 
 // network messages codes, c2s, c2c, s2c

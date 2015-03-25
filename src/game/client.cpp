@@ -1385,6 +1385,13 @@ namespace game
                 getstring(text, p);
                 changemapserv(text, getint(p));
                 mapchanged = true;
+				if (m_lobby)
+					playsound(S_ANNOUNCER_DM);
+				else if (m_ctf)
+					playsound(S_ANNOUNCER_CTF); //eventually, we'll play an announcement of the gametype
+				else if (m_zombie)
+					playsound(S_ANNOUNCER_ZOM);
+
                 if(getint(p)) entities::spawnitems();
                 else senditemstoserver = false;
                 break;

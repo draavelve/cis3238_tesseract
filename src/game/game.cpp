@@ -447,7 +447,7 @@ namespace game
 
             showscores(true);
             disablezoom();
-
+			playsound(S_ANNOUNCER_GAMEOVER);
             execident("intermission");
         }
     }
