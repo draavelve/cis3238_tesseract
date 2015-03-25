@@ -723,6 +723,13 @@ namespace game
 #endif
     }
 
+	// draws time left for map, kills for player
+	void drawAdditionalObjects(){
+		int secs = max(maplimit - lastmillis, 0) / 1000;
+		draw_textf("%d:%02d", 0, 0, secs / 60, secs % 60);
+		draw_textf("%d", 0, 100, player1->frags);
+	}
+
     void gameplayhud(int w, int h)
     {
         pushhudmatrix();
@@ -761,9 +768,8 @@ namespace game
 			}
             if(cmode) cmode->drawhud(d, w, h);
 			// draws time remaining and kills
-			int secs = max(maplimit - lastmillis, 0) / 1000;
-			draw_textf("%d:%02d", 0, 0, secs / 60, secs % 60);
-			draw_textf("%d", 0, 100, player1->frags);
+			drawAdditionalObjects();
+
         }
 
         pophudmatrix();
