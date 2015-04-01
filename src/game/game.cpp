@@ -724,10 +724,25 @@ namespace game
     }
 
 	// draws time left for map, kills for player
-	void drawAdditionalObjects(){
+	void drawAdditionalObjects(int w, int h){
+		float pw, ph, timeW, timeH, fragsW, fragsH;
+		
+		// calculating seconds on map
 		int secs = max(maplimit - lastmillis, 0) / 1000;
-		draw_textf("%d:%02d", 0, 0, secs / 60, secs % 60);
-		draw_textf("%d", 0, 100, player1->frags);
+
+		// calculating location for time to be drawn
+		text_boundsf("  ", pw, ph);
+		text_boundsf("%d:%02d", timeW, timeH);
+		timeH = max(timeH, ph);
+
+		// calculating location for frags to be drawn
+		text_boundsf("%d",fragsW, fragsH);
+		fragsH = max(fragsH, ph);
+
+		// drawing texts
+		draw_textf("%d:%02d", 0, 1750-timeH, secs / 60, secs % 60);
+		draw_textf("%d", 0, 1750-timeH-fragsH, player1->frags);
+		
 	}
 
     void gameplayhud(int w, int h)
@@ -768,7 +783,7 @@ namespace game
 			}
             if(cmode) cmode->drawhud(d, w, h);
 			// draws time remaining and kills
-			drawAdditionalObjects();
+			drawAdditionalObjects(w, h);
 
         }
 
