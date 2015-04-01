@@ -125,7 +125,11 @@ namespace server
         int lasttimeplayed, timeplayed;
         float effectiveness;
 
-        servstate() : state(CS_DEAD), editstate(CS_DEAD), lifesequence(0) {}
+		//mode specific info
+		bool isVIP;
+		bool isZombie;
+
+        servstate() : state(CS_DEAD), editstate(CS_DEAD), lifesequence(0), isVIP(false), isZombie(false) {}
 
         bool isalive(int gamemillis)
         {
@@ -1922,6 +1926,8 @@ namespace server
 
         if(m_ctf) smode = &ctfmode;
         else smode = NULL;
+		
+		//assaination originaly here
 
         if(m_timed && smapname[0]) sendf(-1, 1, "ri2", N_TIMEUP, gamemillis < gamelimit && !interm ? max((gamelimit - gamemillis)/1000, 1) : 0);
         loopv(clients)
@@ -1945,6 +1951,27 @@ namespace server
         }
 
         if(smode) smode->setup();
+
+		//assassination
+		bool blueVip = false;
+		bool redVip = false;
+		if (m_vip) {
+			//conoutf(CON_ERROR, "vip test 2");
+			loopv(clients) {
+				clientinfo *ci = clients[i];
+				if (blueVip == false && ci->team == 1) {
+					ci->state.isVIP = true;
+					conoutf(CON_ERROR, "%s is the blue VIP!", ci->name);
+					blueVip = true;
+				}
+				else if (redVip == false && ci->team == 2) {
+					ci->state.isVIP = true;
+					conoutf(CON_ERROR, "%s is the red VIP!", ci->name);
+					redVip = true;
+				}
+
+			}
+		}
     }
 
     void rotatemap(bool next)
@@ -2091,8 +2118,27 @@ namespace server
                 else { friends = 1; enemies = clients.length()-1; }
                 actor->state.effectiveness += fragvalue*friends/float(max(enemies, 1));
             }
+
             teaminfo *t = m_teammode && validteam(actor->team) ? &teaminfos[actor->team-1] : NULL;
-            if(t) t->frags += fragvalue;
+			if (t){
+				if (m_vip) {
+					if (ts.isVIP && !isteam(target->team, actor->team)) {
+						int multiplier = actor->state.isVIP ? 2 : 1;
+						t->frags += multiplier * fragvalue;
+					}
+				}
+				else {
+					t->frags += fragvalue;
+				}	
+			}
+			else {
+				if (m_zombie) {
+					if (actor->state.isZombie && !ts.isZombie) {
+						ts.isZombie = true;
+					}
+				}
+			}
+
             sendf(-1, 1, "ri5", N_DIED, target->clientnum, actor->clientnum, actor->state.frags, t ? t->frags : 0);
             target->position.setsize(0);
             if(smode) smode->died(target, actor);
