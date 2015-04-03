@@ -1,4 +1,5 @@
 #include "game.h"
+#define ICON_FRAGS 2
 
 namespace game
 {
@@ -740,8 +741,13 @@ namespace game
 		fragsH = max(fragsH, ph);
 
 		// drawing texts
-		draw_textf("%d:%02d", 0, 1750-timeH, secs / 60, secs % 60);
-		draw_textf("%d", 0, 1750-timeH-fragsH, player1->frags);
+		draw_textf("%d:%02d", 60, 1750-timeH, secs / 60, secs % 60);
+		draw_textf("%d", 60, 1750-timeH-fragsH, player1->frags);
+
+		// test draw icon
+		resethudshader();
+		drawicon(ICON_FRAGS, 0, 1750-timeH-fragsH, 60.0f);
+		drawicon(3, 0, 1750 - timeH, 60.0f);
 		
 	}
 
