@@ -1,5 +1,6 @@
 #include "game.h"
 #define ICON_FRAGS 2
+#define ICON_TIMER 3
 
 namespace game
 {
@@ -747,7 +748,7 @@ namespace game
 		// test draw icon
 		resethudshader();
 		drawicon(ICON_FRAGS, 0, 1750-timeH-fragsH, 60.0f);
-		drawicon(3, 0, 1750 - timeH, 60.0f);
+		drawicon(ICON_TIMER, 0, 1750 - timeH, 60.0f);
 		
 	}
 
