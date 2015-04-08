@@ -1952,6 +1952,7 @@ namespace server
 
         if(smode) smode->setup();
 
+		//many problems with these two loops but they will do for now
 		//assassination
 		bool blueVip = false;
 		bool redVip = false;
@@ -1963,13 +1964,29 @@ namespace server
 					ci->state.isVIP = true;
 					conoutf(CON_ERROR, "%s is the blue VIP!", ci->name);
 					blueVip = true;
+					//sendf(-1, 1, "ri5", N_DAMAGE, target->clientnum, actor->clientnum, damage, ts.health);
+					sendf(-1, 1, "ri5", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
 				}
 				else if (redVip == false && ci->team == 2) {
 					ci->state.isVIP = true;
 					conoutf(CON_ERROR, "%s is the red VIP!", ci->name);
 					redVip = true;
+					sendf(-1, 1, "ri5", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
 				}
 
+			}
+		}
+
+		bool haveZombie = false;
+		if (m_zombie) {
+			loopv(clients) {
+				clientinfo *ci = clients[i];
+				if (haveZombie == false && ci->state.isZombie == false) {
+					ci->state.isVIP = true;
+					conoutf(CON_ERROR, "%s is now a zombie!", ci->name);
+					haveZombie = true;
+					sendf(-1, 1, "ri5", N_NEWZOMBIE, ci->clientnum); //let everyone know this guy is a zombie
+				}
 			}
 		}
     }

@@ -208,6 +208,8 @@ enum
     N_SWITCHNAME, N_SWITCHMODEL, N_SWITCHCOLOR, N_SWITCHTEAM,
     N_SERVCMD,
     N_DEMOPACKET,
+	N_NEWVIP,
+	N_NEWZOMBIE,
     NUMMSG
 };
 
@@ -385,6 +387,9 @@ struct gameent : dynent, gamestate
     int team, playermodel, playercolor;
     ai::aiinfo *ai;
     int ownernum, lastnode;
+
+	bool isVIP;
+	bool isZombie;
 
     vec muzzle;
 
