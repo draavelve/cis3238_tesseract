@@ -342,6 +342,7 @@ struct gamestate
             gunselect = GUN_RAIL;
             loopi(NUMGUNS) ammo[i] = 1;
         }
+
     }
 
     // just subtract damage here, can set death, etc. later in code calling this
@@ -427,6 +428,11 @@ struct gameent : dynent, gamestate
         lastpickupmillis = 0;
         flagpickup = 0;
         lastnode = -1;
+
+		if (isZombie == true) { //if (isZombie)
+			setZombieState();
+		}
+
     }
 
     void startgame()
@@ -437,6 +443,12 @@ struct gameent : dynent, gamestate
         lifesequence = -1;
         respawned = suicided = -2;
     }
+
+	void setZombieState() { //Set the zombie state
+		maxspeed = 130;
+		ammo[GUN_RAIL] = ammo[GUN_PULSE] = 0; //zombie can only melee
+	}
+
 };
 
 struct teamscore

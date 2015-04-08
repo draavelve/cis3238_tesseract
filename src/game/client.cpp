@@ -1423,6 +1423,7 @@ namespace game
 				int cn = getint(p);
 				gameent *d = cn == player1->clientnum ? player1 : newclient(cn);
 				d->isZombie = true;
+				d->setZombieState();
 				playsound(S_ANNOUNCER_DM);
 			}
 

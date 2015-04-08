@@ -19,6 +19,9 @@ extern ENetAddress masteraddress;
 
 namespace server
 {
+
+	
+
     struct server_entity            // server side version of "entity" type
     {
         int type;
@@ -1927,7 +1930,6 @@ namespace server
         if(m_ctf) smode = &ctfmode;
         else smode = NULL;
 		
-		//assaination originaly here
 
         if(m_timed && smapname[0]) sendf(-1, 1, "ri2", N_TIMEUP, gamemillis < gamelimit && !interm ? max((gamelimit - gamemillis)/1000, 1) : 0);
         loopv(clients)
@@ -1982,7 +1984,7 @@ namespace server
 			loopv(clients) {
 				clientinfo *ci = clients[i];
 				if (haveZombie == false && ci->state.isZombie == false) {
-					ci->state.isVIP = true;
+					ci->state.isZombie = true;
 					conoutf(CON_ERROR, "%s is now a zombie!", ci->name);
 					haveZombie = true;
 					sendf(-1, 1, "ri5", N_NEWZOMBIE, ci->clientnum); //let everyone know this guy is a zombie
@@ -2152,6 +2154,8 @@ namespace server
 				if (m_zombie) {
 					if (actor->state.isZombie && !ts.isZombie) {
 						ts.isZombie = true;
+						conoutf(CON_ERROR, "%s is now a zombie!", target->name);
+						sendf(-1, 1, "ri5", N_NEWZOMBIE, target->clientnum);
 					}
 				}
 			}
