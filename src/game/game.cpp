@@ -725,6 +725,21 @@ namespace game
 #endif
     }
 
+	void drawZombieFrame(int icon, float x, float y, float szw, float szh)
+	{
+		settexture("media/interface/hud/damage.png");
+		//float tsz = 0.25f, tx = tsz*(icon), ty = tsz*(icon);
+		float tsz = 1.0f, tx = 0, ty = 0;
+		gle::defvertex(2);
+		gle::deftexcoord0();
+		gle::begin(GL_TRIANGLE_STRIP);
+		gle::attribf(x, y);    gle::attribf(tx, ty);
+		gle::attribf(x + szw, y);    gle::attribf(tx + tsz, ty);
+		gle::attribf(x, y + szh); gle::attribf(tx, ty + tsz);
+		gle::attribf(x + szw, y + szh); gle::attribf(tx + tsz, ty + tsz);
+		gle::end();
+	}
+
 	// draws time left for map, kills for player
 	void drawAdditionalObjects(int w, int h){
 		float pw, ph, timeW, timeH, fragsW, fragsH;
@@ -741,14 +756,21 @@ namespace game
 		text_boundsf("%d",fragsW, fragsH);
 		fragsH = max(fragsH, ph);
 
+		// if zombie mode
+		if (m_zombie){
+			resethudshader();
+			drawZombieFrame(0, 0, 0, 2 * w, 2 * h);
+		}
+
 		// drawing texts
 		draw_textf("%d:%02d", 60, 1750-timeH, secs / 60, secs % 60);
 		draw_textf("%d", 60, 1750-timeH-fragsH, player1->frags);
 
-		// test draw icon
+		// draw icon
 		resethudshader();
 		drawicon(ICON_FRAGS, 0, 1750-timeH-fragsH, 60.0f);
 		drawicon(ICON_TIMER, 0, 1750 - timeH, 60.0f);
+
 		
 	}
 
