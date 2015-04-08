@@ -758,8 +758,13 @@ namespace game
 
 		// if zombie mode
 		if (m_zombie){
-			resethudshader();
-			drawZombieFrame(0, 0, 0, 2 * w, 2 * h);
+			
+			if (player1->isZombie){
+				resethudshader();
+				conoutf("%d",player1->isZombie);
+				drawZombieFrame(0, 0, 0, 2 * w, 2 * h);
+			}
+			
 		}
 
 		// drawing texts

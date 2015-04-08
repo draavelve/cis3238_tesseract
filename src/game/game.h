@@ -397,6 +397,9 @@ struct gameent : dynent, gamestate
     {
         name[0] = info[0] = 0;
         respawn();
+		isVIP = false;
+		isZombie = false;
+
     }
     ~gameent()
     {
