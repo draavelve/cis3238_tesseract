@@ -1415,14 +1415,14 @@ namespace game
 			case N_NEWVIP: {
 				int cn = getint(p);
 				gameent *d = cn == player1->clientnum ? player1 : newclient(cn);
-				d->isVIP == true;
+				d->isVIP = true;
 				playsound(S_ANNOUNCER_DM);
 			}
 
 			case N_NEWZOMBIE: {
 				int cn = getint(p);
 				gameent *d = cn == player1->clientnum ? player1 : newclient(cn);
-				d->isZombie == true;
+				d->isZombie = true;
 				playsound(S_ANNOUNCER_DM);
 			}
 
