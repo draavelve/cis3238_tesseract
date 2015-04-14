@@ -1417,6 +1417,7 @@ namespace game
 				gameent *d = cn == player1->clientnum ? player1 : newclient(cn);
 				d->isVIP = true;
 				playsound(S_ANNOUNCER_DM);
+				break;
 			}
 
 			case N_NEWZOMBIE: {
@@ -1425,6 +1426,7 @@ namespace game
 				d->isZombie = true;
 				d->setZombieState();
 				playsound(S_ANNOUNCER_DM);
+				break;
 			}
 
             case N_ITEMLIST:

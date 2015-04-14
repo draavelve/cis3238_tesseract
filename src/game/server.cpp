@@ -20,7 +20,10 @@ extern ENetAddress masteraddress;
 namespace server
 {
 
-	
+	//I'm sticking certain state info here since I haver zero fucking idea where else to put it -Stefano
+	int numZombies = 0;
+	bool blueVIP = false;
+	bool redVIP = false;
 
     struct server_entity            // server side version of "entity" type
     {
@@ -1967,13 +1970,13 @@ namespace server
 					conoutf(CON_ERROR, "%s is the blue VIP!", ci->name);
 					blueVip = true;
 					//sendf(-1, 1, "ri5", N_DAMAGE, target->clientnum, actor->clientnum, damage, ts.health);
-					sendf(-1, 1, "ri5", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
+					sendf(-1, 1, "ri2", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
 				}
 				else if (redVip == false && ci->team == 2) {
 					ci->state.isVIP = true;
 					conoutf(CON_ERROR, "%s is the red VIP!", ci->name);
 					redVip = true;
-					sendf(-1, 1, "ri5", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
+					sendf(-1, 1, "ri2", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
 				}
 
 			}
@@ -1983,11 +1986,12 @@ namespace server
 		if (m_zombie) {
 			loopv(clients) {
 				clientinfo *ci = clients[i];
+				//clientinfo *ci = clients[rand() % clients.length];
 				if (haveZombie == false && ci->state.isZombie == false) {
 					ci->state.isZombie = true;
 					conoutf(CON_ERROR, "%s is now a zombie!", ci->name);
 					haveZombie = true;
-					sendf(-1, 1, "ri5", N_NEWZOMBIE, ci->clientnum); //let everyone know this guy is a zombie
+					sendf(-1, 1, "ri2", N_NEWZOMBIE, ci->clientnum); //let everyone know this guy is a zombie
 				}
 			}
 		}
@@ -2155,7 +2159,7 @@ namespace server
 					if (actor->state.isZombie && !ts.isZombie) {
 						ts.isZombie = true;
 						conoutf(CON_ERROR, "%s is now a zombie!", target->name);
-						sendf(-1, 1, "ri5", N_NEWZOMBIE, target->clientnum);
+						sendf(-1, 1, "ri2", N_NEWZOMBIE, target->clientnum);
 					}
 				}
 			}
@@ -2796,6 +2800,13 @@ namespace server
         if(m_demo) setupdemoplayback();
 
         if(servermotd[0]) sendf(ci->clientnum, 1, "ris", N_SERVMSG, servermotd);
+
+		if (m_zombie && (numZombies == 0)) { //If the player connects and there are no zombies, make him a zombie. Perhaps this should be in a servmode too.
+			ci->state.isZombie = true;
+			numZombies++;
+			conoutf(CON_ERROR, "%s is now a zombie!", ci->name);
+			sendf(-1, 1, "ri5", N_NEWZOMBIE, ci->clientnum); //let everyone know this guy is a zombie
+		}
     }
 
     void parsepacket(int sender, int chan, packetbuf &p)     // has to parse exactly each byte of the packet
