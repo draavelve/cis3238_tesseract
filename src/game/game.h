@@ -142,6 +142,7 @@ static struct gamemodeinfo
 #define m_pulse        (m_check(gamemode, M_PULSE))
 #define m_zombie       (m_check(gamemode, M_ZOMBIE))
 #define m_vip		   (m_check(gamemode, M_VIP))
+#define m_tdm		   ((m_valid(gamemode) && gamemodes[(gamemode) - STARTGAMEMODE].flags == (M_TEAM | M_RAIL)) || (m_valid(gamemode) && gamemodes[(gamemode) - STARTGAMEMODE].flags == (M_TEAM | M_PULSE))) //there's hacks, and then there's stupid hacks like this.
 
 #define m_demo         (m_check(gamemode, M_DEMO))
 #define m_edit         (m_check(gamemode, M_EDIT))
@@ -174,7 +175,9 @@ enum
     S_FLAGFAIL,
 	//Announcer sounds
 	S_ANNOUNCER_DM,
+	S_ANNOUNCER_TDM,
 	S_ANNOUNCER_CTF,
+	S_ANNOUNCER_VIP,
 	S_ANNOUNCER_ZOM,
 	S_ANNOUNCER_GAMEOVER
 };
