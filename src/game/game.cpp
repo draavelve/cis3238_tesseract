@@ -1,6 +1,8 @@
 #include "game.h"
 #define ICON_FRAGS 2
 #define ICON_TIMER 3
+#define RED_TEAM 1
+#define BLUE_TEAM 2
 
 namespace game
 {
@@ -765,6 +767,17 @@ namespace game
 			}
 			
 		}
+		// if VIP mode
+		//if (m_vip){
+		//	if (player1->isVIP){
+		//		if (player1->team == RED_TEAM){
+		//			// draw red icon (0,1750-timeH-fragsH-60)
+		//		}
+		//		else{
+		//			// draw blue icon
+		//		}
+		//	}
+		//}
 
 		// drawing texts
 		draw_textf("%d:%02d", 60, 1750-timeH, secs / 60, secs % 60);
