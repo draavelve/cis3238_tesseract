@@ -1,6 +1,8 @@
 #include "game.h"
 #define ICON_FRAGS 2
 #define ICON_TIMER 3
+#define RED_TEAM 2
+#define BLUE_TEAM 1
 
 namespace game
 {
@@ -740,6 +742,19 @@ namespace game
 		gle::end();
 	}
 
+	void drawVipIcon(int team, int w, int h){
+		float x = 1800 * w / h*0.5f - HICON_SIZE / 2, y = 1800 * 0.95f - HICON_SIZE / 2;
+
+		if (team == RED_TEAM){
+			//draw_textf("VIP - Red", 0, 0);
+			drawicon(0, x, y, 120);
+		}
+		else if (team == BLUE_TEAM) {
+			//draw_textf("VIP - Blue", 0, 0);
+			drawicon(1, x, y, 120);
+		}
+	}
+
 	// draws time left for map, kills for player
 	void drawAdditionalObjects(int w, int h){
 		float pw, ph, timeW, timeH, fragsW, fragsH;
@@ -765,6 +780,13 @@ namespace game
 			}
 			
 		}
+		//if VIP mode
+		if (m_vip){
+			resethudshader();
+			if (player1->isVIP){
+				drawVipIcon(player1->team, w, h);
+			}
+		}
 
 		// drawing texts
 		draw_textf("%d:%02d", 60, 1750-timeH, secs / 60, secs % 60);
@@ -774,8 +796,7 @@ namespace game
 		resethudshader();
 		drawicon(ICON_FRAGS, 0, 1750-timeH-fragsH, 60.0f);
 		drawicon(ICON_TIMER, 0, 1750 - timeH, 60.0f);
-
-		
+	
 	}
 
     void gameplayhud(int w, int h)
