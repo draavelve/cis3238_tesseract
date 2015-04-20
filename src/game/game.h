@@ -451,7 +451,7 @@ struct gameent : dynent, gamestate
 
 	void setZombieState() { //Set the zombie state
 		maxspeed = 130;
-		ammo[GUN_RAIL] = ammo[GUN_PULSE] = 0; //zombie can only melee
+		//ammo[GUN_RAIL] = ammo[GUN_PULSE] = 0; //zombie can only melee
 	}
 
 };
