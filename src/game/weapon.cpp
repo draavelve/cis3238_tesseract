@@ -646,7 +646,7 @@ namespace game
         int gun = d->gunselect, act = d->attacking, atk = guns[gun].attacks[act];
         d->lastaction = lastmillis;
         d->lastattack = atk;
-        if(!d->ammo[gun])
+        if(!d->ammo[gun] && act == ACT_SHOOT) //you don't need ammo to melee
         {
             if(d==player1)
             {
