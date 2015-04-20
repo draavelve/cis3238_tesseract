@@ -2805,7 +2805,7 @@ namespace server
 			ci->state.isZombie = true;
 			numZombies++;
 			conoutf(CON_ERROR, "%s is now a zombie!", ci->name);
-			sendf(-1, 1, "ri5", N_NEWZOMBIE, ci->clientnum); //let everyone know this guy is a zombie
+			sendf(-1, 1, "ri2", N_NEWZOMBIE, ci->clientnum); //let everyone know this guy is a zombie
 		}
     }
 

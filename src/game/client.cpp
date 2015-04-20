@@ -1385,10 +1385,15 @@ namespace game
                 getstring(text, p);
                 changemapserv(text, getint(p));
                 mapchanged = true;
-				if (m_lobby)
+
+				if (m_tdm)
+					playsound(S_ANNOUNCER_TDM);
+				else if (m_lobby)
 					playsound(S_ANNOUNCER_DM);
 				else if (m_ctf)
-					playsound(S_ANNOUNCER_CTF); //eventually, we'll play an announcement of the gametype
+					playsound(S_ANNOUNCER_CTF);
+				else if (m_vip)
+					playsound(S_ANNOUNCER_VIP);
 				else if (m_zombie)
 					playsound(S_ANNOUNCER_ZOM);
 
@@ -1416,7 +1421,6 @@ namespace game
 				int cn = getint(p);
 				gameent *d = cn == player1->clientnum ? player1 : newclient(cn);
 				d->isVIP = true;
-				playsound(S_ANNOUNCER_DM);
 				break;
 			}
 
@@ -1425,7 +1429,6 @@ namespace game
 				gameent *d = cn == player1->clientnum ? player1 : newclient(cn);
 				d->isZombie = true;
 				d->setZombieState();
-				playsound(S_ANNOUNCER_DM);
 				break;
 			}
 
