@@ -434,7 +434,7 @@ struct gameent : dynent, gamestate
         flagpickup = 0;
         lastnode = -1;
 
-		if (isZombie == true) { //if (isZombie)
+		if (isZombie == true) {
 			setZombieState();
 		}
 
@@ -449,9 +449,17 @@ struct gameent : dynent, gamestate
         respawned = suicided = -2;
     }
 
-	void setZombieState() { //Set the zombie state
+	/*Set the zombie state*/
+	void setZombieState() { 
 		maxspeed = 130;
 		ammo[GUN_RAIL] = ammo[GUN_PULSE] = 0; //zombie can only melee
+	}
+	
+	/*Reset all state related to certain game modes*/
+	void resetModeState() {
+		isVIP = false;
+		isZombie = false;
+		maxspeed = 100;
 	}
 
 };

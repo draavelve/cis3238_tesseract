@@ -566,6 +566,9 @@ namespace game
             loopi(NUMGAMEMODES) if(m_mp(STARTGAMEMODE + i)) { mode = STARTGAMEMODE + i; break; }
         }
 
+
+		player1->resetModeState(); //clear zombie, VIP, etc. state
+
         gamemode = mode;
         nextmode = mode;
         if(editmode) toggleedit();
