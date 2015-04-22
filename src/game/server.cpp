@@ -22,8 +22,8 @@ namespace server
 
 	//I'm sticking certain state info here since I haver zero fucking idea where else to put it -Stefano
 	int numZombies = 0;
-	bool blueVIP = false;
-	bool redVIP = false;
+	bool haveBlueVIP = false;
+	bool haveRedVIP = false;
 
     struct server_entity            // server side version of "entity" type
     {
@@ -1899,6 +1899,15 @@ namespace server
         notgotitems = false;
     }
 
+	void clearAllGameInfo() {
+		loopv(clients)
+		{
+			clientinfo *ci = clients[i];
+			ci->state.isVIP = false;
+			ci->state.isZombie = false;
+		}
+	}
+
     void changemap(const char *s, int mode)
     {
         stopdemo();
@@ -1924,6 +1933,10 @@ namespace server
         }
 
         if(!m_mp(gamemode)) kicknonlocalclients(DISC_LOCAL);
+
+		clearAllGameInfo();
+		haveRedVIP = false;
+		haveBlueVIP = false;
 
         sendf(-1, 1, "risii", N_MAPCHANGE, smapname, gamemode, 1);
 
@@ -1967,14 +1980,14 @@ namespace server
 				clientinfo *ci = clients[i];
 				if (blueVip == false && ci->team == 1) {
 					ci->state.isVIP = true;
-					conoutf(CON_ERROR, "%s is the blue VIP!", ci->name);
+					sendf(-1, 1, "ris", N_SERVMSG, tempformatstring("%s is a VIP!", ci->name));
 					blueVip = true;
 					//sendf(-1, 1, "ri5", N_DAMAGE, target->clientnum, actor->clientnum, damage, ts.health);
 					sendf(-1, 1, "ri2", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
 				}
 				else if (redVip == false && ci->team == 2) {
 					ci->state.isVIP = true;
-					conoutf(CON_ERROR, "%s is the red VIP!", ci->name);
+					sendf(-1, 1, "ris", N_SERVMSG, tempformatstring("%s is a VIP!", ci->name));
 					redVip = true;
 					sendf(-1, 1, "ri2", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
 				}
@@ -2790,6 +2803,21 @@ namespace server
         ci->state.lasttimeplayed = lastmillis;
 
         ci->team = m_teammode ? chooseworstteam(ci) : 0;
+
+		if (m_vip) {
+			if (ci->team == 0 && !haveBlueVIP) {
+				ci->state.isVIP = true;
+				sendf(-1, 1, "ri2", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
+				haveBlueVIP = true;
+				sendf(-1, 1, "ris", N_SERVMSG, tempformatstring("%s is a VIP!", ci->name));
+			}
+			else if (ci->team == 1 && !haveRedVIP) {
+				ci->state.isVIP = true;
+				sendf(-1, 1, "ri2", N_NEWVIP, ci->clientnum); //let everyone know this guy is a vip
+				haveRedVIP = true;
+				sendf(-1, 1, "ris", N_SERVMSG, tempformatstring("%s is a VIP!", ci->name));
+			}
+		}
 
         sendwelcome(ci);
         if(restorescore(ci)) sendresume(ci);
