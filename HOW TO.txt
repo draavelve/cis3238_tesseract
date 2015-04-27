@@ -1,0 +1,6 @@
+Using VS express:
+	Find the vcxproj file under src/vcpp
+
+	after building in debug, run tesseract_debug.bat
+
+**Game will not launch if you try to run bin/tesseract_debug.exe**
